@@ -1,0 +1,37 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Panzerwünsche</title>
+  <style>
+    body { font-family: sans-serif; background: #111; color: #fff; padding: 2em; }
+    h1 { color: #0f0; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; background: #222; padding: 1em; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Aktuelle Panzerwünsche</h1>
+  <ul id="wishList"></ul>
+
+  <script>
+    async function loadWishes() {
+      const res = await fetch("https://raw.githubusercontent.com/DEINUSERNAME/panzerwünsche/main/wünsche.json");
+      const data = await res.json();
+
+      const list = document.getElementById("wishList");
+      list.innerHTML = "";
+
+      data.forEach(wunsch => {
+        const li = document.createElement("li");
+        li.textContent = `${wunsch.viewer} wünscht sich: ${wunsch.wunsch} (${new Date(wunsch.zeit).toLocaleString("de-DE")})`;
+        list.appendChild(li);
+      });
+    }
+
+    loadWishes();
+    setInterval(loadWishes, 30000); // alle 30 Sekunden aktualisieren
+  </script>
+</body>
+</html>
